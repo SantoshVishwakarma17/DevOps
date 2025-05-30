@@ -239,7 +239,7 @@ const sampleFlights = [
                                 <p><b>Starting Price:</b> {Flight.basePrice}</p>
                                 <p><b>Available Seats:</b> {Flight.totalSeats}</p>
                               </div>
-                              <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button>
+                              {/* <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button> */}
                             </div>
                           )
                         })}
@@ -265,7 +265,7 @@ const sampleFlights = [
                                 <p><b>Starting Price:</b> {Flight.basePrice}</p>
                                 <p><b>Available Seats:</b> {Flight.totalSeats}</p>
                               </div>
-                              <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button>
+                              {/* <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button> */}
                             </div>
                           )
                         })}
