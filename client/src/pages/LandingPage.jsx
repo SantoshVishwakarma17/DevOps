@@ -153,17 +153,17 @@ const sampleFlights = [
               <select className="form-select form-select-sm mb-3" aria-label=".form-select-sm example" value={departure} onChange={(e)=>setDeparture(e.target.value)}>
                 <option value="" disabled>Select</option>
                 <option value="Chennai">Chennai</option>
-                <option value="Banglore">Banglore</option>
+                <option value="Bangalore">Banglore</option>
                 <option value="Hyderabad">Hyderabad</option>
                 <option value="Mumbai">Mumbai</option>
-                <option value="Indore">Indore</option>
+                <option value="Kolkata">Kolkata</option>
                 <option value="Delhi">Delhi</option>
-                <option value="Pune">Pune</option>
+                {/*<option value="Pune">Pune</option>
                 <option value="Trivendrum">Trivendrum</option>
                 <option value="Bhopal">Bhopal</option>
                 <option value="Kolkata">Kolkata</option>
                 <option value="varanasi">varanasi</option>
-                <option value="Jaipur">Jaipur</option>
+                <option value="Jaipur">Jaipur</option>8*/}
               </select>
               <label htmlFor="floatingSelect">Departure City</label>
             </div>
@@ -172,17 +172,17 @@ const sampleFlights = [
               <select className="form-select form-select-sm mb-3" aria-label=".form-select-sm example" value={destination} onChange={(e)=>setDestination(e.target.value)}>
                 <option value="" disabled>Select</option>
                 <option value="Chennai">Chennai</option>
-                <option value="Banglore">Banglore</option>
+                <option value="Bangalore">Banglore</option>
                 <option value="Hyderabad">Hyderabad</option>
                 <option value="Mumbai">Mumbai</option>
-                <option value="Indore">Indore</option>
+                <option value="Kolkata">Kolkata</option>
                 <option value="Delhi">Delhi</option>
-                <option value="Pune">Pune</option>
+                {/*<option value="Pune">Pune</option>
                 <option value="Trivendrum">Trivendrum</option>
                 <option value="Bhopal">Bhopal</option>
                 <option value="Kolkata">Kolkata</option>
                 <option value="varanasi">varanasi</option>
-                <option value="Jaipur">Jaipur</option>
+                <option value="Jaipur">Jaipur</option>*/}
               </select>
               <label htmlFor="floatingSelect">Destination City</label>
             </div>
