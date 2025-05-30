@@ -291,7 +291,7 @@ const sampleFlights = [
         <div className="container">
           <h2 className="section-title">About Us</h2>
           <p className="section-description">
-            &nbsp; &nbsp;&nbsp; &nbsp; Welcome to SKY Furaito Flight Ticket Booking app, where we're committed to delivering a seamless travel experience from beginning to end. Whether you're heading out for a daily commute, planning an exciting cross-country trip, or looking for a peaceful scenic flight, our app offers a wide variety of options to match your travel needs.
+            &nbsp; &nbsp;&nbsp; &nbsp; Welcome to  Flight Ticket management app, where we're committed to delivering a seamless travel experience from beginning to end. Whether you're heading out for a daily commute, planning an exciting cross-country trip, or looking for a peaceful scenic flight, our app offers a wide variety of options to match your travel needs.
           </p>
           <p className="section-description">
             &nbsp; &nbsp;&nbsp; &nbsp; We know how essential convenience and efficiency are when planning your journey. Our easy-to-use interface lets you quickly browse through available flight schedules, compare prices, and select the seating option that suits you best. In just a few simple steps, you can secure your flight and move closer to your destination. Our streamlined booking process allows you to personalize your travel, from choosing specific departure times to selecting a window seat or accommodating special requests.
