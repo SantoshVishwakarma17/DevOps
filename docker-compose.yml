@@ -19,7 +19,8 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URI=mongodb://mongo:27017/FlightBookingMERN
+      - environment:
+  - MONGO_URI=mongodb://localhost:27017/FlightBookingMERN
 
   mongo:
     image: mongo:6
