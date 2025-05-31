@@ -9,6 +9,13 @@ console.log("Server starting...");
 
 const app = express();
 
+// Allow CORS for your frontend URL
+app.use(cors({
+  origin: 'http://3.84.33.174:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }))
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
