@@ -22,43 +22,12 @@ const LandingPage = () => {
     }
   }, []);
 
-
-
   const [Flights, setFlights] = useState([]);
 
-  // This function filters the sampleFlights based on search criteria
+  // Simplified fetchFlights without sampleFlights
   const fetchFlights = () => {
-
-    // Validation
-    if(checkBox){
-      if(departure !== "" && destination !== "" && departureDate && returnDate){
-        const date = new Date();
-        const date1 = new Date(departureDate);
-        const date2 = new Date(returnDate);
-        if(date1 > date && date2 > date1){
-          setError("");
-          // Filter flights from sampleFlights for round trip (either direction)
-          const filtered = sampleFlights.filter(flight =>
-            (flight.origin === departure && flight.destination === destination) ||
-            (flight.origin === destination && flight.destination === departure)
-          );
-          setFlights(filtered);
-        } else{ setError("Please check the dates"); }
-      } else{ setError("Please fill all the inputs"); }
-    }else{
-      if(departure !== "" && destination !== "" && departureDate){
-        const date = new Date();
-        const date1 = new Date(departureDate);
-        if(date1 >= date){
-          setError("");
-          // Filter flights for one-way trip
-          const filtered = sampleFlights.filter(flight =>
-            flight.origin === departure && flight.destination === destination
-          );
-          setFlights(filtered);
-        } else{ setError("Please check the dates"); }      
-      } else{ setError("Please fill all the inputs"); }
-    }
+    setFlights([]);
+    setError("Flight search is not implemented yet.");
   }
 
   const {setTicketBookingDate} = useContext(GeneralContext);
@@ -157,78 +126,10 @@ const LandingPage = () => {
         {Flights.length > 0 
           ?
           <>
-            {
-              Flights.filter(Flight => Flight.origin === departure && Flight.destination === destination).length > 0 ? 
-              <>
-                <div className="availableFlightsContainer">
-                  <h1>Available Flights</h1>
-
-                  <div className="Flights">
-
-                    {checkBox ?
-                      <>
-                        {Flights.filter(Flight => (Flight.origin === departure && Flight.destination === destination ) || (Flight.origin === destination && Flight.destination === departure)).map((Flight) => {
-                          return (
-                            <div className="Flight" key={Flight._id}>
-                              <div>
-                                <p><b>{Flight.flightName}</b></p>
-                                <p><b>Flight Number:</b> {Flight.flightId}</p>
-                              </div>
-                              <div>
-                                <p><b>Start :</b> {Flight.origin}</p>
-                                <p><b>Departure Time:</b> {Flight.departureTime}</p>
-                              </div>
-                              <div>
-                                <p><b>Destination :</b> {Flight.destination}</p>
-                                <p><b>Arrival Time:</b> {Flight.arrivalTime}</p>
-                              </div>
-                              <div>
-                                <p><b>Starting Price:</b> {Flight.basePrice}</p>
-                                <p><b>Available Seats:</b> {Flight.totalSeats}</p>
-                              </div>
-                              <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button>
-                            </div>
-                          )
-                        })}
-                      </>
-                    :
-                      <>
-                        {Flights.filter(Flight => Flight.origin === departure && Flight.destination === destination).map((Flight) => {
-                          return (
-                            <div className="Flight" key={Flight._id}>
-                              <div>
-                                <p><b>{Flight.flightName}</b></p>
-                                <p><b>Flight Number:</b> {Flight.flightId}</p>
-                              </div>
-                              <div>
-                                <p><b>Start :</b> {Flight.origin}</p>
-                                <p><b>Departure Time:</b> {Flight.departureTime}</p>
-                              </div>
-                              <div>
-                                <p><b>Destination :</b> {Flight.destination}</p>
-                                <p><b>Arrival Time:</b> {Flight.arrivalTime}</p>
-                              </div>
-                              <div>
-                                <p><b>Starting Price:</b> {Flight.basePrice}</p>
-                                <p><b>Available Seats:</b> {Flight.totalSeats}</p>
-                              </div>
-                              <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button>
-                            </div>
-                          )
-                        })}
-                      </>
-                    }
-
-                  </div>
-                </div>
-              </>
-              :
-              <>
-                <div className="availableFlightsContainer">
-                  <h1>No Flights</h1>
-                </div>
-              </>
-            }
+            <div className="availableFlightsContainer">
+              <h1>Available Flights</h1>
+              {/* Flight listing removed since no flights */}
+            </div>
           </>
           : <></>
         }
@@ -255,4 +156,4 @@ const LandingPage = () => {
   )
 }
 
-export default LandingPage
+export default LandingPage;
