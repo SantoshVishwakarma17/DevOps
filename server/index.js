@@ -16,7 +16,7 @@ app.use(cors());
 
 // mongoose setup
 
-const PORT = 5000;
+const PORT = 6001;
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
