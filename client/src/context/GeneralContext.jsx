@@ -10,87 +10,83 @@ const GeneralContextProvider = ({children}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [usertype, setUsertype] = useState('');
-
   const [ticketBookingDate, setTicketBookingDate] = useState();
 
   const inputs = {username, email, usertype, password};
 
-
   const navigate = useNavigate();
+
+  const API_BASE_URL = process.env.REACT_APP_API_URL;
+  console.log("API Base URL:", API_BASE_URL);
 
   const login = async () =>{
     try{
-      const loginInputs = {email, password}
-        await axios.post(`${process.env.REACT_APP_API_URL}/login`, loginInputs)
-        .then( async (res)=>{
+      const loginInputs = {email, password};
+      console.log("Logging in with:", loginInputs);
+      const res = await axios.post(`${API_BASE_URL}/login`, loginInputs);
+      console.log("Login response:", res.data);
 
-            localStorage.setItem('userId', res.data._id);
-            localStorage.setItem('userType', res.data.usertype);
-            localStorage.setItem('username', res.data.username);
-            localStorage.setItem('email', res.data.email);
+      localStorage.setItem('userId', res.data._id);
+      localStorage.setItem('userType', res.data.usertype);
+      localStorage.setItem('username', res.data.username);
+      localStorage.setItem('email', res.data.email);
 
-            if(res.data.usertype === 'customer'){
-                navigate('/');
-            } else if(res.data.usertype === 'admin'){
-                navigate('/admin');
-            } else if(res.data.usertype === 'flight-operator'){
-              navigate('/flight-admin');
-            }
-        }).catch((err) =>{
-            alert("login failed!!");
-            console.log(err);
-        });
+      if(res.data.usertype === 'customer'){
+          navigate('/');
+      } else if(res.data.usertype === 'admin'){
+          navigate('/admin');
+      } else if(res.data.usertype === 'flight-operator'){
+        navigate('/flight-admin');
+      }
 
     }catch(err){
-        console.log(err);
+      alert("Login failed!!");
+      console.error("Login error:", err);
     }
   }
-  
+
   const register = async () =>{
     try{
-        await axios.post(`${process.env.REACT_APP_API_URL}/register`, inputs)
-        .then( async (res)=>{
-            localStorage.setItem('userId', res.data._id);
-            localStorage.setItem('userType', res.data.usertype);
-            localStorage.setItem('username', res.data.username);
-            localStorage.setItem('email', res.data.email);
+      console.log("Registering user with inputs:", inputs);
+      const res = await axios.post(`${API_BASE_URL}/register`, inputs);
+      console.log("Register response:", res.data);
 
-            if(res.data.usertype === 'customer'){
-                navigate('/');
-            } else if(res.data.usertype === 'admin'){
-                navigate('/admin');
-            } else if(res.data.usertype === 'flight-operator'){
-              navigate('/flight-admin');
-            }
+      localStorage.setItem('userId', res.data._id);
+      localStorage.setItem('userType', res.data.usertype);
+      localStorage.setItem('username', res.data.username);
+      localStorage.setItem('email', res.data.email);
 
-        }).catch((err) =>{
-            alert("registration failed!!");
-            console.log(err);
-        });
+      if(res.data.usertype === 'customer'){
+          navigate('/');
+      } else if(res.data.usertype === 'admin'){
+          navigate('/admin');
+      } else if(res.data.usertype === 'flight-operator'){
+        navigate('/flight-admin');
+      }
+
     }catch(err){
-        console.log(err);
+      alert("Registration failed!!");
+      console.error("Registration error:", err);
     }
   }
 
-
-
-  const logout = async () =>{
-    
+  const logout = () =>{
     localStorage.clear();
-    for (let key in localStorage) {
-      if (localStorage.hasOwnProperty(key)) {
-        localStorage.removeItem(key);
-      }
-    }
-    
     navigate('/');
   }
 
-
-
   return (
-    <GeneralContext.Provider value={{login, register, logout, username, setUsername, email, setEmail, password, setPassword, usertype, setUsertype, ticketBookingDate, setTicketBookingDate}} >{children}</GeneralContext.Provider>
+    <GeneralContext.Provider value={{
+      login, register, logout, 
+      username, setUsername, 
+      email, setEmail, 
+      password, setPassword, 
+      usertype, setUsertype, 
+      ticketBookingDate, setTicketBookingDate
+    }}>
+      {children}
+    </GeneralContext.Provider>
   )
 }
 
-export default GeneralContextProvider
+export default GeneralContextProvider;
