@@ -158,12 +158,12 @@ const sampleFlights = [
                 <option value="Mumbai">Mumbai</option>
                 <option value="Kolkata">Kolkata</option>
                 <option value="Delhi">Delhi</option>
-                {/*<option value="Pune">Pune</option>
+                <option value="Pune">Pune</option>
                 <option value="Trivendrum">Trivendrum</option>
                 <option value="Bhopal">Bhopal</option>
                 <option value="Kolkata">Kolkata</option>
                 <option value="varanasi">varanasi</option>
-                <option value="Jaipur">Jaipur</option>8*/}
+                <option value="Jaipur">Jaipur</option>
               </select>
               <label htmlFor="floatingSelect">Departure City</label>
             </div>
@@ -177,12 +177,12 @@ const sampleFlights = [
                 <option value="Mumbai">Mumbai</option>
                 <option value="Kolkata">Kolkata</option>
                 <option value="Delhi">Delhi</option>
-                {/*<option value="Pune">Pune</option>
+                <option value="Pune">Pune</option>
                 <option value="Trivendrum">Trivendrum</option>
                 <option value="Bhopal">Bhopal</option>
                 <option value="Kolkata">Kolkata</option>
                 <option value="varanasi">varanasi</option>
-                <option value="Jaipur">Jaipur</option>*/}
+                <option value="Jaipur">Jaipur</option>
               </select>
               <label htmlFor="floatingSelect">Destination City</label>
             </div>
@@ -239,7 +239,7 @@ const sampleFlights = [
                                 <p><b>Starting Price:</b> {Flight.basePrice}</p>
                                 <p><b>Available Seats:</b> {Flight.totalSeats}</p>
                               </div>
-                              {/* <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button> */}
+                              <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button>
                             </div>
                           )
                         })}
@@ -265,7 +265,7 @@ const sampleFlights = [
                                 <p><b>Starting Price:</b> {Flight.basePrice}</p>
                                 <p><b>Available Seats:</b> {Flight.totalSeats}</p>
                               </div>
-                              {/* <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button> */}
+                              <button className="button btn btn-primary" onClick={() => handleTicketBooking(Flight._id, Flight.origin, Flight.destination)}>Book Now</button>
                             </div>
                           )
                         })}
