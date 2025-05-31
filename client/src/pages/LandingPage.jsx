@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import '../styles/LandingPage.css';
+import React, { useContext, useEffect, useState } from 'react'
+import '../styles/LandingPage.css'
 import { useNavigate } from 'react-router-dom';
 import { GeneralContext } from '../context/GeneralContext';
 
@@ -9,7 +9,7 @@ const sampleFlights = [
   { id: 'FL003', origin: 'Pune', destination: 'Mumbai', departureTime: '2025-06-01T01:00', arrivalTime: '2025-06-01T03:30' },
   { id: 'FL004', origin: 'Jaipur', destination: 'Trivendrum', departureTime: '2025-06-01T10:00', arrivalTime: '2025-06-01T12:30' },
   { id: 'FL005', origin: 'Chennai', destination: 'Bhopal', departureTime: '2025-06-01T22:00', arrivalTime: '2025-06-02T01:00' },
-  // ...add all your 50 flights here as objects or load from your source
+  // ...add all your 50 flights here as objects (or load from your source)
 ];
 
 const LandingPage = () => {
@@ -26,13 +26,12 @@ const LandingPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userType = localStorage.getItem('userType');
-    if (userType === 'admin') {
+    if(localStorage.getItem('userType') === 'admin'){
       navigate('/admin');
-    } else if (userType === 'flight-operator') {
+    } else if(localStorage.getItem('userType') === 'flight-operator'){
       navigate('/flight-admin');
     }
-  }, [navigate]);
+  }, []);
 
   const { setTicketBookingDate } = useContext(GeneralContext);
   const userId = localStorage.getItem('userId');
@@ -77,40 +76,35 @@ const LandingPage = () => {
     } else {
       setFlights(filtered);
     }
-  };
+  }
 
-  const handleTicketBooking = (id) => {
+  const handleTicketBooking = (id, origin, dest) => {
     if (userId) {
       setTicketBookingDate(departureDate);
-      navigate(`/book-flight/${id}`);  // Fixed template string here
+      navigate(`/book-flight/${id}`);
     } else {
       navigate('/auth');
     }
-  };
+  }
 
   return (
     <div className="landingPage">
       <div className="landingHero">
+
         <div className="landingHero-title">
           <h1 className="banner-h1">Take Off on an Unforgettable Flight Booking Journey!</h1>
-          <p className="banner-p">
-            Fulfill your travel dreams with extraordinary flight bookings that take you to unforgettable destinations and ignite your spirit of adventure like never before.
-          </p>
+          <p className="banner-p">Fulfill your travel dreams with extraordinary flight bookings that take you to unforgettable destinations and ignite your spirit of adventure like never before.</p>     
         </div>
 
         <div className="Flight-search-container input-container mb-4">
+
           <div className="form-check form-switch">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              id="flexSwitchCheckDefault"
-              checked={checkBox}
-              onChange={(e) => setCheckBox(e.target.checked)}
-            />
+            <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onChange={(e) => setCheckBox(e.target.checked)} />
             <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Return journey</label>
           </div>
 
-          <div className="Flight-search-container-body">
+          <div className='Flight-search-container-body'>
+
             <div className="form-floating">
               <select
                 className="form-select form-select-sm mb-3"
@@ -168,7 +162,7 @@ const LandingPage = () => {
               <label htmlFor="floatingInputstartDate">Journey date</label>
             </div>
 
-            {checkBox && (
+            {checkBox &&
               <div className="form-floating mb-3">
                 <input
                   type="date"
@@ -179,19 +173,18 @@ const LandingPage = () => {
                 />
                 <label htmlFor="floatingInputreturnDate">Return date</label>
               </div>
-            )}
+            }
 
             <div>
-              <button type="button" className="btn btn-primary" onClick={fetchFlights}>
-                Search
-              </button>
+              <button className="btn btn-primary" onClick={fetchFlights}>Search</button>
             </div>
+
           </div>
 
           {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
 
-        {flights.length > 0 && (
+        {flights.length > 0 &&
           <div className="availableFlightsContainer">
             <h1>Available Flights</h1>
             <table className="table table-striped">
@@ -206,7 +199,7 @@ const LandingPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {flights.map((flight) => (
+                {flights.map(flight => (
                   <tr key={flight.id}>
                     <td>{flight.id}</td>
                     <td>{flight.origin}</td>
@@ -215,9 +208,8 @@ const LandingPage = () => {
                     <td>{new Date(flight.arrivalTime).toLocaleString()}</td>
                     <td>
                       <button
-                        type="button"
                         className="btn btn-success btn-sm"
-                        onClick={() => handleTicketBooking(flight.id)}
+                        onClick={() => handleTicketBooking(flight.id, flight.origin, flight.destination)}
                       >
                         Book
                       </button>
@@ -227,7 +219,8 @@ const LandingPage = () => {
               </tbody>
             </table>
           </div>
-        )}
+        }
+
       </div>
 
       <section id="about" className="section-about p-4">
@@ -236,13 +229,12 @@ const LandingPage = () => {
           <p className="section-description">
             &nbsp; &nbsp;&nbsp; &nbsp; Welcome to Flight Ticket management app, where we're committed to delivering a seamless travel experience from beginning to end...
           </p>
-          <span>
-            <h5>2024 SKY Furaito - &copy; All rights reserved</h5>
-          </span>
+          {/* ... your other about paragraphs ... */}
+          <span><h5>2024 SKY Furaito - &copy; All rights reserved</h5></span>
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
 export default LandingPage;
