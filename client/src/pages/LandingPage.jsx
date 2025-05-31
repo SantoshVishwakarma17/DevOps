@@ -3,32 +3,40 @@ import '../styles/LandingPage.css';
 import { useNavigate } from 'react-router-dom';
 import { GeneralContext } from '../context/GeneralContext';
 
+const sampleFlights = [
+  { id: 'FL001', origin: 'Bangalore', destination: 'Jaipur', departureTime: '2025-06-01T04:30', arrivalTime: '2025-06-01T06:30' },
+  { id: 'FL002', origin: 'Varanasi', destination: 'Kolkata', departureTime: '2025-06-01T13:00', arrivalTime: '2025-06-01T15:00' },
+  { id: 'FL003', origin: 'Pune', destination: 'Mumbai', departureTime: '2025-06-01T01:00', arrivalTime: '2025-06-01T03:30' },
+  { id: 'FL004', origin: 'Jaipur', destination: 'Trivendrum', departureTime: '2025-06-01T10:00', arrivalTime: '2025-06-01T12:30' },
+  { id: 'FL005', origin: 'Chennai', destination: 'Bhopal', departureTime: '2025-06-01T22:00', arrivalTime: '2025-06-02T01:00' },
+  // add more flights as needed
+];
+
 const LandingPage = () => {
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const [checkBox, setCheckBox] = useState(false);
+
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
+
   const [flights, setFlights] = useState([]);
 
   const navigate = useNavigate();
-
   const { setTicketBookingDate } = useContext(GeneralContext);
+
   const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    // Redirect based on userType if logged in
-    const userType = localStorage.getItem('userType');
-    if (userType === 'admin') {
+    if (localStorage.getItem('userType') === 'admin') {
       navigate('/admin');
-    } else if (userType === 'flight-operator') {
+    } else if (localStorage.getItem('userType') === 'flight-operator') {
       navigate('/flight-admin');
     }
   }, [navigate]);
 
-  const fetchFlights = async () => {
+  const fetchFlights = () => {
     setError('');
     setFlights([]);
 
@@ -49,30 +57,21 @@ const LandingPage = () => {
       return;
     }
 
-    setLoading(true);
-    try {
-      // Replace with your real backend API URL
-      // Use encodeURIComponent to avoid issues with spaces etc.
-      const apiUrl = `/api/flights?origin=${encodeURIComponent(departure)}&destination=${encodeURIComponent(destination)}&date=${encodeURIComponent(departureDate)}`;
+    // Filter sample flights by criteria
+    const filtered = sampleFlights.filter(flight => {
+      const flightDate = flight.departureTime.split('T')[0];
+      return (
+        flight.origin === departure &&
+        flight.destination === destination &&
+        flightDate === departureDate
+      );
+    });
 
-      const response = await fetch(apiUrl);
-      if (!response.ok) {
-        throw new Error('Failed to fetch flights from server.');
-      }
-
-      const data = await response.json();
-
-      if (!Array.isArray(data) || data.length === 0) {
-        setError('No flights found for your search.');
-        setFlights([]);
-      } else {
-        setFlights(data);
-      }
-    } catch (err) {
-      setError(err.message || 'Error fetching flights.');
+    if (filtered.length === 0) {
+      setError('No flights found for your search.');
       setFlights([]);
-    } finally {
-      setLoading(false);
+    } else {
+      setFlights(filtered);
     }
   };
 
@@ -91,12 +90,13 @@ const LandingPage = () => {
         <div className="landingHero-title">
           <h1 className="banner-h1">Take Off on an Unforgettable Flight Booking Journey!</h1>
           <p className="banner-p">
-            Fulfill your travel dreams with extraordinary flight bookings that take you to unforgettable destinations and ignite your spirit of adventure like never before.
-          </p>     
+            Fulfill your travel dreams with extraordinary flight bookings that take you to unforgettable
+            destinations and ignite your spirit of adventure like never before.
+          </p>
         </div>
 
         <div className="Flight-search-container input-container mb-4">
-          <div className="form-check form-switch mb-3">
+          <div className="form-check form-switch">
             <input
               className="form-check-input"
               type="checkbox"
@@ -104,18 +104,22 @@ const LandingPage = () => {
               checked={checkBox}
               onChange={(e) => setCheckBox(e.target.checked)}
             />
-            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Return journey</label>
+            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+              Return journey
+            </label>
           </div>
 
-          <div className='Flight-search-container-body'>
-            <div className="form-floating mb-3">
+          <div className="Flight-search-container-body">
+            <div className="form-floating">
               <select
-                className="form-select"
+                className="form-select form-select-sm mb-3"
                 aria-label="Departure city"
                 value={departure}
                 onChange={(e) => setDeparture(e.target.value)}
               >
-                <option value="" disabled>Select Departure City</option>
+                <option value="" disabled>
+                  Select
+                </option>
                 <option value="Chennai">Chennai</option>
                 <option value="Bangalore">Bangalore</option>
                 <option value="Hyderabad">Hyderabad</option>
@@ -128,17 +132,19 @@ const LandingPage = () => {
                 <option value="Varanasi">Varanasi</option>
                 <option value="Jaipur">Jaipur</option>
               </select>
-              <label>Departure City</label>
+              <label htmlFor="floatingSelect">Departure City</label>
             </div>
 
-            <div className="form-floating mb-3">
+            <div className="form-floating">
               <select
-                className="form-select"
+                className="form-select form-select-sm mb-3"
                 aria-label="Destination city"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
               >
-                <option value="" disabled>Select Destination City</option>
+                <option value="" disabled>
+                  Select
+                </option>
                 <option value="Chennai">Chennai</option>
                 <option value="Bangalore">Bangalore</option>
                 <option value="Hyderabad">Hyderabad</option>
@@ -151,17 +157,18 @@ const LandingPage = () => {
                 <option value="Varanasi">Varanasi</option>
                 <option value="Jaipur">Jaipur</option>
               </select>
-              <label>Destination City</label>
+              <label htmlFor="floatingSelect">Destination City</label>
             </div>
 
             <div className="form-floating mb-3">
               <input
                 type="date"
                 className="form-control"
+                id="floatingInputstartDate"
                 value={departureDate}
                 onChange={(e) => setDepartureDate(e.target.value)}
               />
-              <label>Journey Date</label>
+              <label htmlFor="floatingInputstartDate">Journey date</label>
             </div>
 
             {checkBox && (
@@ -169,16 +176,17 @@ const LandingPage = () => {
                 <input
                   type="date"
                   className="form-control"
+                  id="floatingInputreturnDate"
                   value={returnDate}
                   onChange={(e) => setReturnDate(e.target.value)}
                 />
-                <label>Return Date</label>
+                <label htmlFor="floatingInputreturnDate">Return date</label>
               </div>
             )}
 
             <div>
-              <button className="btn btn-primary" onClick={fetchFlights} disabled={loading}>
-                {loading ? 'Searching...' : 'Search'}
+              <button className="btn btn-primary" onClick={fetchFlights}>
+                Search
               </button>
             </div>
           </div>
@@ -187,7 +195,7 @@ const LandingPage = () => {
         </div>
 
         {flights.length > 0 && (
-          <div className="availableFlightsContainer mt-4">
+          <div className="availableFlightsContainer">
             <h1>Available Flights</h1>
             <table className="table table-striped">
               <thead>
@@ -201,7 +209,7 @@ const LandingPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {flights.map(flight => (
+                {flights.map((flight) => (
                   <tr key={flight.id}>
                     <td>{flight.id}</td>
                     <td>{flight.origin}</td>
@@ -224,13 +232,16 @@ const LandingPage = () => {
         )}
       </div>
 
-      <section id="about" className="section-about p-4 mt-5">
+      <section id="about" className="section-about p-4">
         <div className="container">
           <h2 className="section-title">About Us</h2>
           <p className="section-description">
-            &nbsp;&nbsp;&nbsp;&nbsp;Welcome to Flight Ticket Management app, where we're committed to delivering a seamless travel experience from beginning to end...
+            &nbsp; &nbsp;&nbsp; &nbsp; Welcome to Flight Ticket management app, where we're committed to delivering a seamless travel
+            experience from beginning to end...
           </p>
-          <span><h5>2024 SKY Furaito - &copy; All rights reserved</h5></span>
+          <span>
+            <h5>2024 SKY Furaito - &copy; All rights reserved</h5>
+          </span>
         </div>
       </section>
     </div>
