@@ -5,6 +5,7 @@ import { GeneralContext } from '../context/GeneralContext';
 
 const LandingPage = () => {
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [checkBox, setCheckBox] = useState(false);
   const [departure, setDeparture] = useState('');
   const [destination, setDestination] = useState('');
@@ -17,80 +18,6 @@ const LandingPage = () => {
   const { setTicketBookingDate } = useContext(GeneralContext);
   const userId = localStorage.getItem('userId');
 
-  // Hardcoded flights data — 10 flights with varying origins, destinations, and dates
-  const allFlights = [
-    {
-      id: 'FL001',
-      origin: 'Chennai',
-      destination: 'Bangalore',
-      departureTime: '2025-06-10T09:00:00',
-      arrivalTime: '2025-06-10T10:15:00',
-    },
-    {
-      id: 'FL002',
-      origin: 'Bangalore',
-      destination: 'Mumbai',
-      departureTime: '2025-06-10T11:00:00',
-      arrivalTime: '2025-06-10T13:00:00',
-    },
-    {
-      id: 'FL003',
-      origin: 'Delhi',
-      destination: 'Kolkata',
-      departureTime: '2025-06-11T07:00:00',
-      arrivalTime: '2025-06-11T09:30:00',
-    },
-    {
-      id: 'FL004',
-      origin: 'Mumbai',
-      destination: 'Chennai',
-      departureTime: '2025-06-12T15:00:00',
-      arrivalTime: '2025-06-12T17:30:00',
-    },
-    {
-      id: 'FL005',
-      origin: 'Hyderabad',
-      destination: 'Pune',
-      departureTime: '2025-06-10T06:00:00',
-      arrivalTime: '2025-06-10T07:30:00',
-    },
-    {
-      id: 'FL006',
-      origin: 'Chennai',
-      destination: 'Delhi',
-      departureTime: '2025-06-10T08:30:00',
-      arrivalTime: '2025-06-10T12:30:00',
-    },
-    {
-      id: 'FL007',
-      origin: 'Pune',
-      destination: 'Jaipur',
-      departureTime: '2025-06-11T10:00:00',
-      arrivalTime: '2025-06-11T12:45:00',
-    },
-    {
-      id: 'FL008',
-      origin: 'Varanasi',
-      destination: 'Bhopal',
-      departureTime: '2025-06-10T14:00:00',
-      arrivalTime: '2025-06-10T15:30:00',
-    },
-    {
-      id: 'FL009',
-      origin: 'Trivendrum',
-      destination: 'Hyderabad',
-      departureTime: '2025-06-10T16:00:00',
-      arrivalTime: '2025-06-10T18:00:00',
-    },
-    {
-      id: 'FL010',
-      origin: 'Jaipur',
-      destination: 'Kolkata',
-      departureTime: '2025-06-12T13:00:00',
-      arrivalTime: '2025-06-12T16:00:00',
-    },
-  ];
-
   useEffect(() => {
     // Redirect based on userType if logged in
     const userType = localStorage.getItem('userType');
@@ -101,7 +28,7 @@ const LandingPage = () => {
     }
   }, [navigate]);
 
-  const fetchFlights = () => {
+  const fetchFlights = async () => {
     setError('');
     setFlights([]);
 
@@ -122,25 +49,31 @@ const LandingPage = () => {
       return;
     }
 
-    // Filter flights based on search criteria: origin, destination, departureDate
-    // Match flights whose origin and destination match and departure date matches (ignoring time)
-    const filteredFlights = allFlights.filter(flight => {
-      if (
-        flight.origin === departure &&
-        flight.destination === destination &&
-        flight.departureTime.startsWith(departureDate)
-      ) {
-        return true;
+    setLoading(true);
+    try {
+      // Replace with your real backend API URL
+      // Use encodeURIComponent to avoid issues with spaces etc.
+      const apiUrl = `/api/flights?origin=${encodeURIComponent(departure)}&destination=${encodeURIComponent(destination)}&date=${encodeURIComponent(departureDate)}`;
+
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error('Failed to fetch flights from server.');
       }
-      return false;
-    });
 
-    if (filteredFlights.length === 0) {
-      setError('No flights found for your search.');
-      return;
+      const data = await response.json();
+
+      if (!Array.isArray(data) || data.length === 0) {
+        setError('No flights found for your search.');
+        setFlights([]);
+      } else {
+        setFlights(data);
+      }
+    } catch (err) {
+      setError(err.message || 'Error fetching flights.');
+      setFlights([]);
+    } finally {
+      setLoading(false);
     }
-
-    setFlights(filteredFlights);
   };
 
   const handleTicketBooking = (id) => {
@@ -155,7 +88,6 @@ const LandingPage = () => {
   return (
     <div className="landingPage">
       <div className="landingHero">
-
         <div className="landingHero-title">
           <h1 className="banner-h1">Take Off on an Unforgettable Flight Booking Journey!</h1>
           <p className="banner-p">
@@ -164,7 +96,6 @@ const LandingPage = () => {
         </div>
 
         <div className="Flight-search-container input-container mb-4">
-
           <div className="form-check form-switch mb-3">
             <input
               className="form-check-input"
@@ -177,7 +108,6 @@ const LandingPage = () => {
           </div>
 
           <div className='Flight-search-container-body'>
-
             <div className="form-floating mb-3">
               <select
                 className="form-select"
@@ -234,7 +164,7 @@ const LandingPage = () => {
               <label>Journey Date</label>
             </div>
 
-            {checkBox &&
+            {checkBox && (
               <div className="form-floating mb-3">
                 <input
                   type="date"
@@ -244,12 +174,13 @@ const LandingPage = () => {
                 />
                 <label>Return Date</label>
               </div>
-            }
+            )}
 
             <div>
-              <button className="btn btn-primary" onClick={fetchFlights}>Search</button>
+              <button className="btn btn-primary" onClick={fetchFlights} disabled={loading}>
+                {loading ? 'Searching...' : 'Search'}
+              </button>
             </div>
-
           </div>
 
           {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -291,7 +222,6 @@ const LandingPage = () => {
             </table>
           </div>
         )}
-
       </div>
 
       <section id="about" className="section-about p-4 mt-5">
