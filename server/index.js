@@ -5,6 +5,7 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import { User, Booking, Flight } from './schemas.js';
 
+console.log("Server starting...");
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(cors());
 
 // mongoose setup
 
-const PORT = 6001;
+const PORT = 5000;
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
