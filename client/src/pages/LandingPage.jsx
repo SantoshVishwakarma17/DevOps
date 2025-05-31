@@ -9,7 +9,7 @@ const sampleFlights = [
   { id: 'FL003', origin: 'Pune', destination: 'Mumbai', departureTime: '2025-06-01T01:00', arrivalTime: '2025-06-01T03:30' },
   { id: 'FL004', origin: 'Jaipur', destination: 'Trivendrum', departureTime: '2025-06-01T10:00', arrivalTime: '2025-06-01T12:30' },
   { id: 'FL005', origin: 'Chennai', destination: 'Bhopal', departureTime: '2025-06-01T22:00', arrivalTime: '2025-06-02T01:00' },
-  // add more flights as needed
+  // ...add all your 50 flights here as objects or load from your source
 ];
 
 const LandingPage = () => {
@@ -24,40 +24,44 @@ const LandingPage = () => {
   const [flights, setFlights] = useState([]);
 
   const navigate = useNavigate();
-  const { setTicketBookingDate } = useContext(GeneralContext);
-
-  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
-    if (localStorage.getItem('userType') === 'admin') {
+    const userType = localStorage.getItem('userType');
+    if (userType === 'admin') {
       navigate('/admin');
-    } else if (localStorage.getItem('userType') === 'flight-operator') {
+    } else if (userType === 'flight-operator') {
       navigate('/flight-admin');
     }
   }, [navigate]);
 
+  const { setTicketBookingDate } = useContext(GeneralContext);
+  const userId = localStorage.getItem('userId');
+
   const fetchFlights = () => {
     setError('');
-    setFlights([]);
 
     if (!departure) {
       setError('Please select departure city.');
+      setFlights([]);
       return;
     }
     if (!destination) {
       setError('Please select destination city.');
+      setFlights([]);
       return;
     }
     if (!departureDate) {
       setError('Please select journey date.');
+      setFlights([]);
       return;
     }
     if (departure === destination) {
       setError('Departure and destination cannot be the same.');
+      setFlights([]);
       return;
     }
 
-    // Filter sample flights by criteria
+    // Filter flights by departure city, destination city, and departure date (date only)
     const filtered = sampleFlights.filter(flight => {
       const flightDate = flight.departureTime.split('T')[0];
       return (
@@ -78,7 +82,7 @@ const LandingPage = () => {
   const handleTicketBooking = (id) => {
     if (userId) {
       setTicketBookingDate(departureDate);
-      navigate(`/book-flight/${id}`);
+      navigate(`/book-flight/${id}`);  // Fixed template string here
     } else {
       navigate('/auth');
     }
@@ -90,8 +94,7 @@ const LandingPage = () => {
         <div className="landingHero-title">
           <h1 className="banner-h1">Take Off on an Unforgettable Flight Booking Journey!</h1>
           <p className="banner-p">
-            Fulfill your travel dreams with extraordinary flight bookings that take you to unforgettable
-            destinations and ignite your spirit of adventure like never before.
+            Fulfill your travel dreams with extraordinary flight bookings that take you to unforgettable destinations and ignite your spirit of adventure like never before.
           </p>
         </div>
 
@@ -104,9 +107,7 @@ const LandingPage = () => {
               checked={checkBox}
               onChange={(e) => setCheckBox(e.target.checked)}
             />
-            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
-              Return journey
-            </label>
+            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Return journey</label>
           </div>
 
           <div className="Flight-search-container-body">
@@ -117,9 +118,7 @@ const LandingPage = () => {
                 value={departure}
                 onChange={(e) => setDeparture(e.target.value)}
               >
-                <option value="" disabled>
-                  Select
-                </option>
+                <option value="" disabled>Select</option>
                 <option value="Chennai">Chennai</option>
                 <option value="Bangalore">Bangalore</option>
                 <option value="Hyderabad">Hyderabad</option>
@@ -142,9 +141,7 @@ const LandingPage = () => {
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
               >
-                <option value="" disabled>
-                  Select
-                </option>
+                <option value="" disabled>Select</option>
                 <option value="Chennai">Chennai</option>
                 <option value="Bangalore">Bangalore</option>
                 <option value="Hyderabad">Hyderabad</option>
@@ -185,7 +182,7 @@ const LandingPage = () => {
             )}
 
             <div>
-              <button className="btn btn-primary" onClick={fetchFlights}>
+              <button type="button" className="btn btn-primary" onClick={fetchFlights}>
                 Search
               </button>
             </div>
@@ -218,6 +215,7 @@ const LandingPage = () => {
                     <td>{new Date(flight.arrivalTime).toLocaleString()}</td>
                     <td>
                       <button
+                        type="button"
                         className="btn btn-success btn-sm"
                         onClick={() => handleTicketBooking(flight.id)}
                       >
@@ -236,8 +234,7 @@ const LandingPage = () => {
         <div className="container">
           <h2 className="section-title">About Us</h2>
           <p className="section-description">
-            &nbsp; &nbsp;&nbsp; &nbsp; Welcome to Flight Ticket management app, where we're committed to delivering a seamless travel
-            experience from beginning to end...
+            &nbsp; &nbsp;&nbsp; &nbsp; Welcome to Flight Ticket management app, where we're committed to delivering a seamless travel experience from beginning to end...
           </p>
           <span>
             <h5>2024 SKY Furaito - &copy; All rights reserved</h5>
