@@ -17,6 +17,11 @@ app.use(cors());
 // mongoose setup
 
 const PORT = 6001;
+
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'UP', message: 'API is healthy' });
+});
+
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
