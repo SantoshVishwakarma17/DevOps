@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
@@ -8,10 +7,9 @@ import { User, Booking, Flight } from './schemas.js';
 console.log("Server starting...");
 
 const app = express();
-
 const PORT = 6001;
 
-// CORS middleware — allow only your frontend origin
+// CORS middleware - allow only your frontend origin
 app.use(cors({
   origin: 'http://3.84.33.174:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -32,7 +30,8 @@ app.get('/api/health', (req, res) => {
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-}).then(() => {
+})
+.then(() => {
   console.log('MongoDB connected');
 
   // REGISTER
@@ -58,6 +57,7 @@ mongoose.connect(process.env.MONGO_URI, {
         password: hashedPassword,
         approval,
       });
+
       const userCreated = await newUser.save();
       return res.status(201).json(userCreated);
     } catch (error) {
@@ -322,7 +322,11 @@ mongoose.connect(process.env.MONGO_URI, {
     }
   });
 
+  // Start server
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`Running @ ${PORT}`);
   });
-}).catch((e) => console.error(`Error in db connection: ${e}`));
+})
+.catch((e) => {
+  console.error(`Error in db connection: ${e}`);
+});
