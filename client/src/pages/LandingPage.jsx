@@ -17,6 +17,80 @@ const LandingPage = () => {
   const { setTicketBookingDate } = useContext(GeneralContext);
   const userId = localStorage.getItem('userId');
 
+  // Hardcoded flights data — 10 flights with varying origins, destinations, and dates
+  const allFlights = [
+    {
+      id: 'FL001',
+      origin: 'Chennai',
+      destination: 'Bangalore',
+      departureTime: '2025-06-10T09:00:00',
+      arrivalTime: '2025-06-10T10:15:00',
+    },
+    {
+      id: 'FL002',
+      origin: 'Bangalore',
+      destination: 'Mumbai',
+      departureTime: '2025-06-10T11:00:00',
+      arrivalTime: '2025-06-10T13:00:00',
+    },
+    {
+      id: 'FL003',
+      origin: 'Delhi',
+      destination: 'Kolkata',
+      departureTime: '2025-06-11T07:00:00',
+      arrivalTime: '2025-06-11T09:30:00',
+    },
+    {
+      id: 'FL004',
+      origin: 'Mumbai',
+      destination: 'Chennai',
+      departureTime: '2025-06-12T15:00:00',
+      arrivalTime: '2025-06-12T17:30:00',
+    },
+    {
+      id: 'FL005',
+      origin: 'Hyderabad',
+      destination: 'Pune',
+      departureTime: '2025-06-10T06:00:00',
+      arrivalTime: '2025-06-10T07:30:00',
+    },
+    {
+      id: 'FL006',
+      origin: 'Chennai',
+      destination: 'Delhi',
+      departureTime: '2025-06-10T08:30:00',
+      arrivalTime: '2025-06-10T12:30:00',
+    },
+    {
+      id: 'FL007',
+      origin: 'Pune',
+      destination: 'Jaipur',
+      departureTime: '2025-06-11T10:00:00',
+      arrivalTime: '2025-06-11T12:45:00',
+    },
+    {
+      id: 'FL008',
+      origin: 'Varanasi',
+      destination: 'Bhopal',
+      departureTime: '2025-06-10T14:00:00',
+      arrivalTime: '2025-06-10T15:30:00',
+    },
+    {
+      id: 'FL009',
+      origin: 'Trivendrum',
+      destination: 'Hyderabad',
+      departureTime: '2025-06-10T16:00:00',
+      arrivalTime: '2025-06-10T18:00:00',
+    },
+    {
+      id: 'FL010',
+      origin: 'Jaipur',
+      destination: 'Kolkata',
+      departureTime: '2025-06-12T13:00:00',
+      arrivalTime: '2025-06-12T16:00:00',
+    },
+  ];
+
   useEffect(() => {
     // Redirect based on userType if logged in
     const userType = localStorage.getItem('userType');
@@ -48,20 +122,25 @@ const LandingPage = () => {
       return;
     }
 
-    // TODO: Replace this with actual backend API call or context data fetch.
-    // Example placeholder to show where to fetch flights from backend:
-    // fetch(`/api/flights?origin=${departure}&destination=${destination}&date=${departureDate}`)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     if (data.length === 0) {
-    //       setError('No flights found for your search.');
-    //     }
-    //     setFlights(data);
-    //   })
-    //   .catch(() => setError('Failed to fetch flights.'));
+    // Filter flights based on search criteria: origin, destination, departureDate
+    // Match flights whose origin and destination match and departure date matches (ignoring time)
+    const filteredFlights = allFlights.filter(flight => {
+      if (
+        flight.origin === departure &&
+        flight.destination === destination &&
+        flight.departureTime.startsWith(departureDate)
+      ) {
+        return true;
+      }
+      return false;
+    });
 
-    // Currently showing no flights (empty list)
-    setError('No flights data available. Please connect to backend.');
+    if (filteredFlights.length === 0) {
+      setError('No flights found for your search.');
+      return;
+    }
+
+    setFlights(filteredFlights);
   };
 
   const handleTicketBooking = (id) => {
