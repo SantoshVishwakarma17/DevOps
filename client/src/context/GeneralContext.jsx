@@ -18,16 +18,26 @@ const GeneralContextProvider = ({children}) => {
   const navigate = useNavigate();
 
   const login = async () => {
-    try {
-      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, { email, password });
-      const { userType, userId } = res.data;
-      localStorage.setItem('userType', userType);
-      localStorage.setItem('userId', userId);
-      // Optional redirect logic
-    } catch (error) {
-      console.error('Login failed:', error);
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, { email, password });
+    const { userType, userId } = res.data;
+    localStorage.setItem('userType', userType);
+    localStorage.setItem('userId', userId);
+
+    if (userType === 'customer') {
+      navigate('/');  // or your default customer landing page
+    } else if (userType === 'admin') {
+      navigate('/admin');
+    } else if (userType === 'flight-operator') {
+      navigate('/flight-admin');
+    } else {
+      navigate('/');  // fallback
     }
-  };
+
+  } catch (error) {
+    console.error('Login failed:', error);
+  }
+};
 
   const register = async () =>{
     try{
