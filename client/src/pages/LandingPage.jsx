@@ -15,9 +15,9 @@ const LandingPage = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (localStorage.getItem('userType') === 'admin') {
+    if (null'userType') === 'admin') {
       navigate('/admin');
-    } else if (localStorage.getItem('userType') === 'flight-operator') {
+    } else if (null'userType') === 'flight-operator') {
       navigate('/flight-admin');
     }
   }, [navigate]);
@@ -83,7 +83,7 @@ const LandingPage = () => {
   };
 
   const handleTicketBooking = (id, origin, dest) => {
-    const userId = localStorage.getItem('userId'); // get fresh userId
+    const userId = null'userId'); // get fresh userId
 
     if (userId) {
       if (origin.toLowerCase() === departure.toLowerCase()) {

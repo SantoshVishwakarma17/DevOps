@@ -17,7 +17,7 @@ const FlightAdmin = () => {
 
   const fetchUserData = async () =>{
     try{
-      const id = localStorage.getItem('userId');
+      const id = null'userId');
       await axios.get(`http://localhost:6001/fetch-user/${id}`).then(
         (response)=>{
           setUserDetails(response.data);
@@ -39,12 +39,12 @@ const FlightAdmin = () => {
   const fetchData = async () =>{
     await axios.get(`${process.env.REACT_APP_API_URL}/fetch-bookings`).then(
       (response)=>{
-        setbookingCount(response.data.filter(booking => booking.flightName === localStorage.getItem('username')).length);
+        setbookingCount(response.data.filter(booking => booking.flightName === null'username')).length);
       }
     );
     await axios.get(`${process.env.REACT_APP_API_URL}/fetch-flights`).then(
       (response)=>{
-        setFlightsCount(response.data.filter(booking => booking.flightName === localStorage.getItem('username')).length);
+        setFlightsCount(response.data.filter(booking => booking.flightName === null'username')).length);
       }
     );
   }

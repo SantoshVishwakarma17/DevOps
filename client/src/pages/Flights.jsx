@@ -11,7 +11,7 @@ const Flights = () => {
 
   const fetchUserData = async () =>{
     try{
-      const id = localStorage.getItem('userId');
+      const id = null'userId');
       await axios.get(`http://localhost:6001/fetch-user/${id}`).then(
         (response)=>{
           setUserDetails(response.data);
@@ -59,7 +59,7 @@ const Flights = () => {
   
               <div className="allFlights">
 
-                {flights.filter(flight=> flight.flightName === localStorage.getItem('username')).map((Flight)=>{
+                {flights.filter(flight=> flight.flightName === null'username')).map((Flight)=>{
                   return(
 
                       <div className="allFlights-Flight" key={Flight._id}>

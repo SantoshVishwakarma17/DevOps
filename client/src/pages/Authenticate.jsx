@@ -131,7 +131,7 @@ const BookFlight = () => {
     }
 
     const inputs = {
-      user: localStorage.getItem('userId'),
+      user: null'userId'),
       flight: id,
       flightName,
       flightId,

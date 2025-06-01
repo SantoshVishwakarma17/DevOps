@@ -8,10 +8,9 @@ export const GeneralContext = createContext();
 const GeneralContextProvider = ({ children }) => {
   const navigate = useNavigate();
 
-  // 1) Initialize from localStorage on first render
   const [usertype, setUsertype] = useState('');
   useEffect(() => {
-    const saved = localStorage.getItem('userType');
+    const saved = null'userType');
     if (saved) setUsertype(saved);
   }, []); // run once on mount
 
@@ -21,7 +20,6 @@ const GeneralContextProvider = ({ children }) => {
   const [password, setPassword] = useState('');
   const [ticketBookingDate, setTicketBookingDate] = useState();
 
-  // 2) LOGIN function: post to backend, then write localStorage + React state + navigate
   const login = async () => {
     try {
       const res = await axios.post(
@@ -30,9 +28,6 @@ const GeneralContextProvider = ({ children }) => {
       );
       const { userType, userId } = res.data;
 
-      // write into localStorage
-      localStorage.setItem('userType', userType);
-      localStorage.setItem('userId', userId);
 
       // update React state
       setUsertype(userType);
@@ -61,10 +56,6 @@ const GeneralContextProvider = ({ children }) => {
         { username, email, password, usertype }
       );
       // backend returns new user info
-      localStorage.setItem('userId', res.data._id);
-      localStorage.setItem('userType', res.data.usertype);
-      localStorage.setItem('username', res.data.username);
-      localStorage.setItem('email', res.data.email);
 
       // update state
       setUsertype(res.data.usertype);
@@ -84,7 +75,6 @@ const GeneralContextProvider = ({ children }) => {
 
   // 4) LOGOUT: clear everything and go to /auth
   const logout = () => {
-    localStorage.clear();      // clears all keys, including userType
     setUsertype('');           // reset React state
     navigate('/auth', { replace: true }); // send user to login page
   };

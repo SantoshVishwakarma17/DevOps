@@ -72,7 +72,7 @@ const BookFlight = () => {
   
     const bookFlight = async ()=>{
   
-      const inputs = {user: localStorage.getItem('userId'), flight: id, flightName, 
+      const inputs = {user: null'userId'), flight: id, flightName, 
                                                   flightId, departure: StartCity, journeyTime: startTime, destination: destinationCity, 
                                                   email, mobile, passengers: passengerDetails, totalPrice, 
                                                   journeyDate, seatClass: coachType} 

@@ -13,7 +13,7 @@ const NewFlight = () => {
 
     const fetchUserData = async () =>{
       try{
-        const id = localStorage.getItem('userId');
+        const id = null'userId');
         await axios.get(`http://localhost:6001/fetch-user/${id}`).then(
           (response)=>{
             setUserDetails(response.data);
@@ -28,7 +28,7 @@ const NewFlight = () => {
 
 
 
-    const [flightName, setFlightName] = useState(localStorage.getItem('username'));
+    const [flightName, setFlightName] = useState(null'username'));
 
     const [flightId, setFlightId] = useState('');
     const [origin, setOrigin] = useState('');

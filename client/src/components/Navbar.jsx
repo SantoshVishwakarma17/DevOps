@@ -13,7 +13,6 @@ const Navbar = () => {
   // If user is not logged in, usertype === ''
   // Clicking Login just calls logout(), which clears state and sends to /auth
   const handleLoginClick = () => {
-    logout(); // this will clear localStorage + context state + navigate to '/auth'
   };
 
   return (
