@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// AuthProtector.jsx
+import { Navigate } from 'react-router-dom';
 
 const AuthProtector = ({ children }) => {
-  const navigate = useNavigate();
+  const userType = localStorage.getItem('userType');
 
-  useEffect(() => {
-    if (!localStorage.getItem('userType')) {
-      navigate('/auth');
-    }
-  }, [navigate]);
+  // If no userType found, redirect to login
+  if (!userType) {
+    return <Navigate to="/auth" replace />;
+  }
 
+  // Otherwise, render protected children
   return children;
 };
 

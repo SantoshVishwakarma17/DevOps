@@ -20,7 +20,14 @@ const Navbar = () => {
             </div>
             <div className="nav-options">
               <p onClick={() => navigate('/')}>Home</p>
-              <button onClick={() => navigate('/auth')}>Login</button>
+              <button
+                onClick={() => {
+                  localStorage.clear();        // Clear any stale userType
+                  navigate('/auth');           // Then go to login
+                }}
+              >
+                Login
+              </button>
             </div>
           </>
         ) : (
