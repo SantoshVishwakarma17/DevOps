@@ -4,89 +4,94 @@ import { useNavigate } from "react-router-dom";
 
 export const GeneralContext = createContext();
 
-const GeneralContextProvider = ({children}) => {
-
+const GeneralContextProvider = ({ children }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [usertype, setUsertype] = useState('');
   const [ticketBookingDate, setTicketBookingDate] = useState();
 
-  const inputs = {username, email, usertype, password};
-
+  const inputs = { username, email, usertype, password };
   const navigate = useNavigate();
-
   const API_BASE_URL = process.env.REACT_APP_API_URL;
-  console.log("API Base URL:", API_BASE_URL);
 
-  const login = async () =>{
-    try{
-      const loginInputs = {email, password};
-      console.log("Logging in with:", loginInputs);
+  const login = async () => {
+    try {
+      const loginInputs = { email, password };
       const res = await axios.post(`${API_BASE_URL}/login`, loginInputs);
-      console.log("Login response:", res.data);
 
-      localStorage.setItem('userId', res.data._id);
-      localStorage.setItem('userType', res.data.usertype);
-      localStorage.setItem('username', res.data.username);
-      localStorage.setItem('email', res.data.email);
+      const { token, userType, user } = res.data;
 
-      if(res.data.usertype === 'customer'){
-          navigate('/');
-      } else if(res.data.usertype === 'admin'){
-          navigate('/admin');
-      } else if(res.data.usertype === 'flight-operator'){
+      // Store in localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', user._id);
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('username', user.username);
+      localStorage.setItem('email', user.email);
+
+      // Navigate based on role
+      if (userType === 'customer') {
+        navigate('/');
+      } else if (userType === 'admin') {
+        navigate('/admin');
+      } else if (userType === 'flight-operator') {
         navigate('/flight-admin');
       }
 
-    }catch(err){
-      alert("Login failed!!");
+      return true;
+    } catch (err) {
       console.error("Login error:", err);
+      alert("Login failed!!");
+      return false;
     }
-  }
+  };
 
-  const register = async () =>{
-    try{
-      console.log("Registering user with inputs:", inputs);
+  const register = async () => {
+    try {
       const res = await axios.post(`${API_BASE_URL}/register`, inputs);
-      console.log("Register response:", res.data);
+      const { token, userType, user } = res.data;
 
-      localStorage.setItem('userId', res.data._id);
-      localStorage.setItem('userType', res.data.usertype);
-      localStorage.setItem('username', res.data.username);
-      localStorage.setItem('email', res.data.email);
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', user._id);
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('username', user.username);
+      localStorage.setItem('email', user.email);
 
-      if(res.data.usertype === 'customer'){
-          navigate('/');
-      } else if(res.data.usertype === 'admin'){
-          navigate('/admin');
-      } else if(res.data.usertype === 'flight-operator'){
+      if (userType === 'customer') {
+        navigate('/');
+      } else if (userType === 'admin') {
+        navigate('/admin');
+      } else if (userType === 'flight-operator') {
         navigate('/flight-admin');
       }
 
-    }catch(err){
-      alert("Registration failed!!");
+      return true;
+    } catch (err) {
       console.error("Registration error:", err);
+      alert("Registration failed!!");
+      return false;
     }
-  }
+  };
 
-  const logout = () =>{
+  const logout = () => {
     localStorage.clear();
-    navigate('/');
-  }
+    navigate('/auth');
+  };
 
   return (
     <GeneralContext.Provider value={{
-      login, register, logout, 
-      username, setUsername, 
-      email, setEmail, 
-      password, setPassword, 
-      usertype, setUsertype, 
+      login,
+      register,
+      logout,
+      username, setUsername,
+      email, setEmail,
+      password, setPassword,
+      usertype, setUsertype,
       ticketBookingDate, setTicketBookingDate
     }}>
       {children}
     </GeneralContext.Provider>
-  )
-}
+  );
+};
 
 export default GeneralContextProvider;

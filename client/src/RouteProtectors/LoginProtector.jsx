@@ -6,13 +6,13 @@ const LoginProtector = ({ children }) => {
 
   if (userType === 'customer') {
     return <Navigate to='/' replace />;
-  }
-  if (userType === 'admin') {
+  } else if (userType === 'admin') {
     return <Navigate to='/admin' replace />;
+  } else if (userType === 'flight-operator') {
+    return <Navigate to='/flight-admin' replace />;
   }
 
-  // no userType found, so user not logged in — allow login page to render
-  return children;
+  return children; // not logged in
 };
 
 export default LoginProtector;
