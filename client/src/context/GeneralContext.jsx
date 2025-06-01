@@ -18,33 +18,18 @@ const GeneralContextProvider = ({children}) => {
 
   const navigate = useNavigate();
 
-  const login = async () =>{
-    try{
-      const loginInputs = {email, password}
-        await axios.post('http://localhost:6001/login', loginInputs)
-        .then( async (res)=>{
-
-            localStorage.setItem('userId', res.data._id);
-            localStorage.setItem('userType', res.data.usertype);
-            localStorage.setItem('username', res.data.username);
-            localStorage.setItem('email', res.data.email);
-
-            if(res.data.usertype === 'customer'){
-                navigate('/');
-            } else if(res.data.usertype === 'admin'){
-                navigate('/admin');
-            } else if(res.data.usertype === 'flight-operator'){
-              navigate('/flight-admin');
-            }
-        }).catch((err) =>{
-            alert("login failed!!");
-            console.log(err);
-        });
-
-    }catch(err){
-        console.log(err);
-    }
+  const login = async () => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/login`, { email, password });
+    const { userType, userId } = res.data;
+    localStorage.setItem('userType', userType);
+    localStorage.setItem('userId', userId);
+    // Optional redirect logic
+  } catch (error) {
+    console.error('Login failed:', error);
   }
+};
+
   
   const register = async () =>{
     try{

@@ -212,14 +212,13 @@ mongoose.connect(process.env.MONGO_URI, {
 
   // Fetch all flights
   app.get('/fetch-flights', async (req, res) => {
-    try {
-      const flights = await Flight.find();
-      res.json(flights);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Server Error' });
-    }
-  });
+  try {
+    const flights = await Flight.find(); // Or apply filters here
+    res.json(flights);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch flights' });
+  }
+});
 
   // Fetch single flight by ID
   app.get('/fetch-flight/:id', async (req, res) => {

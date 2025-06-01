@@ -20,7 +20,7 @@ const BookFlight = () => {
     }, [])
   
     const fetchFlightData = async () =>{
-      await axios.get(`http://localhost:6001/fetch-flight/${id}`).then(
+      await axios.get(`${process.env.REACT_APP_API_URL}/fetch-flights`).then(
         (response) =>{
           setFlightName(response.data.flightName);
           setFlightId(response.data.flightId);
