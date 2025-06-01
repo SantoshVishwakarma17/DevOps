@@ -13,20 +13,19 @@ const LandingPage = () => {
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
 
-
   const navigate = useNavigate();
-  useEffect(()=>{
-    if(localStorage.getItem('userType') === 'admin'){
+  useEffect(() => {
+    if (localStorage.getItem('userType') === 'admin') {
       navigate('/admin');
-    } else if(localStorage.getItem('userType') === 'flight-operator'){
+    } else if (localStorage.getItem('userType') === 'flight-operator') {
       navigate('/flight-admin');
     }
-  }, []);
+  }, [navigate]);
 
   const [Flights, setFlights] = useState([]);
 
   const { setTicketBookingDate } = useContext(GeneralContext);
-  const userId = localStorage.getItem('userId');
+  // Removed duplicate userId declaration here
 
   // Fetch flights from backend filtered by departure and destination
   const fetchFlights = async () => {
@@ -84,17 +83,18 @@ const LandingPage = () => {
   };
 
   const handleTicketBooking = (id, origin, dest) => {
+    const userId = localStorage.getItem('userId'); // get fresh userId
+
     if (userId) {
       if (origin.toLowerCase() === departure.toLowerCase()) {
         setTicketBookingDate(departureDate);
         navigate(`/book-flight/${id}`);
-      } else if (dest.toLowerCase() === departure.toLowerCase()) {
-        // For return journey flight
+      } else if (dest.toLowerCase() === destination.toLowerCase()) {
         setTicketBookingDate(returnDate);
         navigate(`/book-flight/${id}`);
       }
     } else {
-      navigate('/auth');
+      navigate('/auth'); // redirect to login page if not logged in
     }
   };
 
