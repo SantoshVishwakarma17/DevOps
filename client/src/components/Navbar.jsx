@@ -1,3 +1,5 @@
+// src/components/Navbar.jsx
+
 import React, { useContext } from 'react';
 import '../styles/Navbar.css';
 import { useNavigate } from 'react-router-dom';
@@ -8,9 +10,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { logout, usertype } = useContext(GeneralContext);
 
+  // If user is not logged in, usertype === ''
+  // Clicking Login just calls logout(), which clears state and sends to /auth
   const handleLoginClick = () => {
-    logout(); // clears localStorage and resets context state
-    navigate('/auth', { replace: true }); // navigate to login page
+    logout(); // this will clear localStorage + context state + navigate to '/auth'
   };
 
   return (
@@ -28,6 +31,7 @@ const Navbar = () => {
         </>
       ) : (
         <>
+          {/* Customer menu */}
           {usertype === 'customer' && (
             <>
               <div className="navbar-header">
@@ -41,6 +45,8 @@ const Navbar = () => {
               </div>
             </>
           )}
+
+          {/* Admin menu */}
           {usertype === 'admin' && (
             <>
               <div className="navbar-header">
@@ -56,6 +62,8 @@ const Navbar = () => {
               </div>
             </>
           )}
+
+          {/* Flight‐operator menu */}
           {usertype === 'flight-operator' && (
             <>
               <div className="navbar-header">

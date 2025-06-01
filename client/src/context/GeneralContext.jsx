@@ -1,27 +1,43 @@
-import React, { createContext, useState } from 'react';
+// src/context/GeneralContext.jsx
+import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 export const GeneralContext = createContext();
 
 const GeneralContextProvider = ({ children }) => {
+  const navigate = useNavigate();
+
+  // 1) Initialize from localStorage on first render
+  const [usertype, setUsertype] = useState('');
+  useEffect(() => {
+    const saved = localStorage.getItem('userType');
+    if (saved) setUsertype(saved);
+  }, []); // run once on mount
+
+  // Other states (username/email/password) are only used inside login/register pages
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usertype, setUsertype] = useState(localStorage.getItem('userType') || '');
-
   const [ticketBookingDate, setTicketBookingDate] = useState();
 
-  const navigate = useNavigate();
-
+  // 2) LOGIN function: post to backend, then write localStorage + React state + navigate
   const login = async () => {
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, { email, password });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/login`,
+        { email, password }
+      );
       const { userType, userId } = res.data;
+
+      // write into localStorage
       localStorage.setItem('userType', userType);
       localStorage.setItem('userId', userId);
-      setUsertype(userType); // update React state!
 
+      // update React state
+      setUsertype(userType);
+
+      // navigate based on userType
       if (userType === 'customer') {
         navigate('/');
       } else if (userType === 'admin') {
@@ -33,17 +49,25 @@ const GeneralContextProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login failed:', error);
+      // maybe show an error message
     }
   };
 
+  // 3) REGISTER function: similar to login
   const register = async () => {
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/register`, { username, email, password, usertype });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/register`,
+        { username, email, password, usertype }
+      );
+      // backend returns new user info
       localStorage.setItem('userId', res.data._id);
       localStorage.setItem('userType', res.data.usertype);
       localStorage.setItem('username', res.data.username);
       localStorage.setItem('email', res.data.email);
-      setUsertype(res.data.usertype); // update React state!
+
+      // update state
+      setUsertype(res.data.usertype);
 
       if (res.data.usertype === 'customer') {
         navigate('/');
@@ -53,33 +77,34 @@ const GeneralContextProvider = ({ children }) => {
         navigate('/flight-admin');
       }
     } catch (err) {
-      alert("Registration failed!!");
-      console.error(err);
+      console.error('Registration failed:', err);
+      alert('Registration failed!!');
     }
   };
 
+  // 4) LOGOUT: clear everything and go to /auth
   const logout = () => {
-    localStorage.clear();
-    setUsertype('');
-    navigate('/auth'); // navigate to login page on logout
+    localStorage.clear();      // clears all keys, including userType
+    setUsertype('');           // reset React state
+    navigate('/auth', { replace: true }); // send user to login page
   };
 
   return (
     <GeneralContext.Provider
       value={{
-        login,
-        register,
-        logout,
+        usertype,
+        setUsertype,
         username,
         setUsername,
         email,
         setEmail,
         password,
         setPassword,
-        usertype,
-        setUsertype,
         ticketBookingDate,
         setTicketBookingDate,
+        login,
+        register,
+        logout,
       }}
     >
       {children}

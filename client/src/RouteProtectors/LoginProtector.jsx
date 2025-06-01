@@ -1,24 +1,18 @@
-import React from 'react';
+// src/RouteProtectors/LoginProtector.jsx
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+import { GeneralContext } from '../context/GeneralContext';
 
 const LoginProtector = ({ children }) => {
-  const userType = localStorage.getItem('userType');
+  const { usertype } = useContext(GeneralContext);
 
-  if (userType) {
-    // Redirect logged-in users away from /auth
-    if (userType === 'customer') {
-      return <Navigate to='/' replace />; // Customer home
-    } else if (userType === 'admin') {
-      return <Navigate to='/admin' replace />; // Admin dashboard
-    } else if (userType === 'flight-operator') {
-      return <Navigate to='/flight-admin' replace />; // Flight operator dashboard
-    } else {
-      // Default fallback for unknown user types
-      return <Navigate to='/' replace />;
-    }
+  // If usertype exists, redirect to their home
+  if (usertype) {
+    if (usertype === 'customer') return <Navigate to="/" replace />;
+    if (usertype === 'admin') return <Navigate to="/admin" replace />;
+    if (usertype === 'flight-operator') return <Navigate to="/flight-admin" replace />;
   }
-
-  // If not logged in, allow access to login page
+  // If not logged in, let them see the login page
   return children;
 };
 
