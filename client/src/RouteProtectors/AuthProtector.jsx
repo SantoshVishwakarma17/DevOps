@@ -1,15 +1,16 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const AuthProtector = ({ children }) => {
   const userType = localStorage.getItem('userType');
+  const location = useLocation();
 
   if (!userType) {
-    // User not logged in, redirect to login page (or homepage)
-    return <Navigate to='/' replace />;
+    // Redirect to login page, pass current location in state
+    return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
-  // User is authenticated, render children
+  // User is authenticated, render protected children
   return children;
 };
 

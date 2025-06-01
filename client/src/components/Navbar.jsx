@@ -6,12 +6,15 @@ const Navbar = ({ isLoggedin, setIsLoggedin }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userType');
-    localStorage.removeItem('userId');
-    setIsLoggedin(false);
-    navigate('/auth');
-  };
+  localStorage.removeItem('token');
+  localStorage.removeItem('userType');
+  localStorage.removeItem('userId');
+
+  setIsLoggedin(false); // update App state, so Navbar updates UI
+
+  navigate('/auth'); // redirect to login page
+};
+
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">

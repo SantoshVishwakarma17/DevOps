@@ -1,15 +1,30 @@
-
 import React, { useContext } from 'react'
 import { GeneralContext } from '../context/GeneralContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({setIsLogin}) => {
 
-  const {setEmail, setPassword, login} = useContext(GeneralContext);
+  const { setEmail, setPassword, login } = useContext(GeneralContext);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) =>{
     e.preventDefault();
-    await login();
+
+    const success = await login(); // Assume login returns true/false or similar
+    
+    if (success) {
+      const userType = localStorage.getItem('userType');
+      if (userType === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    } else {
+      // Optionally show error message if login failed
+      alert('Login failed, please check your credentials.');
+    }
   }
+
   return (
     <form className="authForm">
         <h2>Login</h2>
@@ -29,4 +44,5 @@ const Login = ({setIsLogin}) => {
     </form>
   )
 }
-export default Login
+
+export default Login;

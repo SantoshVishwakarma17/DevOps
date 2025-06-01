@@ -19,9 +19,17 @@ import FlightBookings from './pages/FlightBookings.jsx';
 import Flights from './pages/Flights.jsx';
 
 function App() {
+  const [isLoggedin, setIsLoggedin] = useState(false);
+
+  useEffect(() => {
+    // When app loads, check if user token exists in localStorage
+    const token = localStorage.getItem('token');
+    setIsLoggedin(!!token); // true if token exists, false otherwise
+  }, []);
+  
   return (
     <div className="App">
-      <Navbar />
+      <Navbar isLoggedin={isLoggedin} setIsLoggedin={setIsLoggedin} />
 
       <Routes>
         <Route exact path = '' element={<LandingPage />} />

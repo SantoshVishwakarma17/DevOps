@@ -4,15 +4,14 @@ import { Navigate } from 'react-router-dom';
 const LoginProtector = ({ children }) => {
   const userType = localStorage.getItem('userType');
 
-  if (userType) {
-    if (userType === 'customer') {
-      return <Navigate to='/' replace />;
-    } else if (userType === 'admin') {
-      return <Navigate to='/admin' replace />;
-    }
+  if (userType === 'customer') {
+    return <Navigate to='/' replace />;
+  }
+  if (userType === 'admin') {
+    return <Navigate to='/admin' replace />;
   }
 
-  // If no userType, show login or public content
+  // no userType found, so user not logged in — allow login page to render
   return children;
 };
 
