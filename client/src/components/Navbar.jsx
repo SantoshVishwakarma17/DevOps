@@ -8,6 +8,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const usertype = localStorage.getItem('userType');
   const { logout } = useContext(GeneralContext);
+  const handleLoginClick = () => {
+    localStorage.removeItem('userType'); // Remove only userType (don't clear everything)
+    navigate('/auth', { replace: true }); // Forcefully navigate to login
+  };
 
   return (
     <>
@@ -20,14 +24,7 @@ const Navbar = () => {
             </div>
             <div className="nav-options">
               <p onClick={() => navigate('/')}>Home</p>
-              <button
-                onClick={() => {
-                  localStorage.clear();        // Clear any stale userType
-                  navigate('/auth');           // Then go to login
-                }}
-              >
-                Login
-              </button>
+              <button onClick={handleLoginClick}>Login</button>
             </div>
           </>
         ) : (
