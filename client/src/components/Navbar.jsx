@@ -20,7 +20,7 @@ const Navbar = () => {
             </div>
             <div className="nav-options">
               <p onClick={() => navigate('/')}>Home</p>
-              {/*<p onClick={() => navigate('/auth')}>Login</p>*/}
+              <p onClick={() => navigate('/auth')}>Login</p>
             </div>
           </>
         ) : (
