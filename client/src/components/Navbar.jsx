@@ -10,10 +10,11 @@ const Navbar = ({ isLoggedin, setIsLoggedin }) => {
   localStorage.removeItem('userType');
   localStorage.removeItem('userId');
 
-  setIsLoggedin(false); // update App state, so Navbar updates UI
+  setIsLoggedin(false);  // **Notify app that user logged out**
 
-  navigate('/auth'); // redirect to login page
+  navigate('/auth');
 };
+
 
 
   return (

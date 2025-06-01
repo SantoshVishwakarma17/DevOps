@@ -7,23 +7,24 @@ const Login = ({setIsLogin}) => {
   const { setEmail, setPassword, login } = useContext(GeneralContext);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) =>{
-    e.preventDefault();
+  const handleLogin = async (e) => {
+  e.preventDefault();
 
-    const success = await login(); // Assume login returns true/false or similar
-    
-    if (success) {
-      const userType = localStorage.getItem('userType');
-      if (userType === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+  const success = await login();
+
+  if (success) {
+    setIsLoggedin(true);  // **Notify app that user logged in**
+
+    const userType = localStorage.getItem('userType');
+    if (userType === 'admin') {
+      navigate('/admin');
     } else {
-      // Optionally show error message if login failed
-      alert('Login failed, please check your credentials.');
+      navigate('/');
     }
+  } else {
+    alert('Login failed, please check your credentials.');
   }
+}
 
   return (
     <form className="authForm">
