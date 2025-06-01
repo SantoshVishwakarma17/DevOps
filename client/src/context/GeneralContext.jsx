@@ -15,25 +15,23 @@ const GeneralContextProvider = ({children}) => {
 
   const inputs = {username, email, usertype, password};
 
-
   const navigate = useNavigate();
 
   const login = async () => {
-  try {
-    const res = await axios.post(`${API_BASE_URL}/login`, { email, password });
-    const { userType, userId } = res.data;
-    localStorage.setItem('userType', userType);
-    localStorage.setItem('userId', userId);
-    // Optional redirect logic
-  } catch (error) {
-    console.error('Login failed:', error);
-  }
-};
+    try {
+      const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, { email, password });
+      const { userType, userId } = res.data;
+      localStorage.setItem('userType', userType);
+      localStorage.setItem('userId', userId);
+      // Optional redirect logic
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
 
-  
   const register = async () =>{
     try{
-        await axios.post('http://localhost:6001/register', inputs)
+        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/register`, inputs)
         .then( async (res)=>{
             localStorage.setItem('userId', res.data._id);
             localStorage.setItem('userType', res.data.usertype);
@@ -57,24 +55,22 @@ const GeneralContextProvider = ({children}) => {
     }
   }
 
-
-
   const logout = async () =>{
-    
+
     localStorage.clear();
     for (let key in localStorage) {
       if (localStorage.hasOwnProperty(key)) {
         localStorage.removeItem(key);
       }
     }
-    
+
     navigate('/');
   }
 
-
-
   return (
-    <GeneralContext.Provider value={{login, register, logout, username, setUsername, email, setEmail, password, setPassword, usertype, setUsertype, ticketBookingDate, setTicketBookingDate}} >{children}</GeneralContext.Provider>
+    <GeneralContext.Provider value={{login, register, logout, username, setUsername, email, setEmail, password, setPassword, usertype, setUsertype, ticketBookingDate, setTicketBookingDate}} >
+      {children}
+    </GeneralContext.Provider>
   )
 }
 
