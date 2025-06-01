@@ -1,18 +1,14 @@
-import React from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const AuthProtector = ({ children, allowedRoles = [] }) => {
-  const userType = localStorage.getItem('userType');
-  const location = useLocation();
+const AuthProtector =  ({ children }) => {
 
-  if (!userType) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
-  }
+  useEffect(() => {
 
-  // If allowedRoles is defined and userType isn't included
-  if (allowedRoles.length > 0 && !allowedRoles.includes(userType)) {
-    return <Navigate to="/" replace />;
-  }
+    if (!localStorage.getItem('userType')) {
+      window.location.href = '/';
+    }
+  }, [localStorage]);
+
 
   return children;
 };

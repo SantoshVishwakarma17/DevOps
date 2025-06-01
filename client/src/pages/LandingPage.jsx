@@ -13,16 +13,15 @@ const LandingPage = () => {
   const [departureDate, setDepartureDate] = useState('');
   const [returnDate, setReturnDate] = useState('');
 
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const userType = localStorage.getItem('userType');
-    if (userType === 'admin') {
+  const navigate = useNavigate();
+  useEffect(()=>{
+    if(localStorage.getItem('userType') === 'admin'){
       navigate('/admin');
-    } else if (userType === 'flight-operator') {
+    } else if(localStorage.getItem('userType') === 'flight-operator'){
       navigate('/flight-admin');
     }
-  }, [navigate]);
+  }, []);
 
   const [Flights, setFlights] = useState([]);
 
