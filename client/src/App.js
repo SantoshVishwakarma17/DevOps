@@ -26,7 +26,7 @@ function App() {
       <Routes>
         <Route exact path = '' element={<LandingPage />} />
         <Route path='/auth' element={<LoginProtector> <Authenticate /> </LoginProtector>} />
-        <Route path='/book-Flight/:id' element={<AuthProtector> <BookFlight /> </AuthProtector>} />
+        <Route path='/book-flight/:id' element={<AuthProtector> <BookFlight /> </AuthProtector>} />
         <Route path='/bookings' element={<AuthProtector> <Bookings /> </AuthProtector>} />
 
         <Route path='/admin' element={<AuthProtector><Admin /> </AuthProtector>} />
