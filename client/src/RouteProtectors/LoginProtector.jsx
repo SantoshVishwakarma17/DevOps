@@ -1,17 +1,19 @@
-import React from 'react'
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-const LoginProtector = ({children}) => {
+const LoginProtector = ({ children }) => {
+  const userType = localStorage.getItem('userType');
 
-    if (localStorage.getItem('userType')){
-        if (localStorage.getItem('userType') === 'customer'){
-            return <Navigate to='/' replace /> 
-        }else if (localStorage.getItem('userType') === 'admin'){
-            return <Navigate to='/admin' replace /> 
-        }
+  if (userType) {
+    if (userType === 'customer') {
+      return <Navigate to='/' replace />;
+    } else if (userType === 'admin') {
+      return <Navigate to='/admin' replace />;
     }
-  
-    return children;
-}
+  }
+
+  // If no userType, show login or public content
+  return children;
+};
 
 export default LoginProtector;

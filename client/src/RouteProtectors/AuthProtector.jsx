@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 
-const AuthProtector =  ({ children }) => {
+const AuthProtector = ({ children }) => {
+  const userType = localStorage.getItem('userType');
 
-  useEffect(() => {
+  if (!userType) {
+    // User not logged in, redirect to login page (or homepage)
+    return <Navigate to='/' replace />;
+  }
 
-    if (!localStorage.getItem('userType')) {
-      window.location.href = '/';
-    }
-  }, [localStorage]);
-
-
+  // User is authenticated, render children
   return children;
 };
 
