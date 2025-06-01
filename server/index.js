@@ -13,7 +13,7 @@ const PORT = 6001;
 
 // CORS middleware - allow only your frontend origin
 app.use(cors({
-  origin: 'http://3.84.33.174:3000',
+  origin: 'http://54.210.172.142:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
